@@ -9,9 +9,10 @@ class APIFeatures {
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
-    // advanced filtering
+    // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
     this.query = this.query.find(JSON.parse(queryStr));
 
     return this;
@@ -21,7 +22,6 @@ class APIFeatures {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
-      // sort("price ratingsAverage)
     } else {
       this.query = this.query.sort('-createdAt');
     }
@@ -36,6 +36,7 @@ class APIFeatures {
     } else {
       this.query = this.query.select('-__v');
     }
+
     return this;
   }
 
@@ -49,5 +50,4 @@ class APIFeatures {
     return this;
   }
 }
-
 module.exports = APIFeatures;
